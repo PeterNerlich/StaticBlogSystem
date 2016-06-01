@@ -69,45 +69,22 @@ function header_content() {
 			<p class="author"><?php echo $THIS->author; ?></p>
 			<p class="published"><?php echo date($TL[$LANG]['date-format'], $THIS->published); ?></p>
 		</div>
-		<?php lang_menu($THIS->title, $LANG); ?>
-		<form method="get" action="<?php if(queryURI() != ''){echo queryURI();}else{echo '?';} ?>"  id="searchform">
-			<span><input type="text" name="search" placeholder="<?php echo $TL[$LANG]['searchbar-placeholder']; ?>" <?php if ($DISPLAY === 'SEARCH') { echo 'value="'.trim_all($SEARCH).'"'; } ?>></span>
-			<?php
-			$args = getargs();
-			if (isset($args['search'])) {
-				unset($args['search']);
-			}
-			foreach ($args as $key => $value) { ?>
-				<input type="hidden" name="<?php echo $key; ?>" value="<?php echo $value; ?>">
-			<?php } ?>
-			<button type="submit"><?php echo $TL[$LANG]['searchbar-submit']; ?></button>
-		</form>
-	<?php } elseif ($DISPLAY === 'CATEGORY') {
+		<?php lang_menu($THIS->title, $LANG);
+			search_form();
+		} elseif ($DISPLAY === 'CATEGORY') {
 		heafoo_overview(array("c"=>'all')); ?>
 		<img src="./category/img/icon-<?php echo (is_file('./category/img/icon-'.$CAT->slug.'.svg')?$CAT->slug:'unknown'); ?>.svg">
 		<h1><?php echo $CAT->title[$LANG]; ?></h1>
 		<p class="description"><?php echo $CAT->description[$LANG]; ?></p>
 		<?php lang_menu($TL, $LANG); ?>
-		<!--<form method="get" action="<?php if(queryURI() != ''){echo queryURI();}else{echo '?';} ?>"  id="searchform">
-			<span><input type="text" name="search" placeholder="<?php echo $TL[$LANG]['searchbar-placeholder']; ?>" <?php if ($DISPLAY === 'SEARCH') { echo 'value="'.trim_all($SEARCH).'"'; } ?>></span>
-			<?php
-			$args = getargs();
-			if (isset($args['search'])) {
-				unset($args['search']);
-			}
-			foreach ($args as $key => $value) { ?>
-				<input type="hidden" name="<?php echo $key; ?>" value="<?php echo $value; ?>">
-			<?php } ?>
-			<button type="submit"><?php echo $TL[$LANG]['searchbar-submit']; ?></button>
-		</form>-->
 		<?php search_form($SEARCH); ?>
 	<?php } elseif ($DISPLAY === 'ALL_C') {
 		heafoo_overview(array('c'=>'')); ?>
 		<h1><?php echo $TL[$LANG]['title-categories']; ?> – <?php echo $TL[$LANG]['title-blogname']; ?></h1>
 		<?php lang_menu($TL, $LANG); ?>
 		<p style="float: right; line-height: 34px;"><a href="/aboutme"><?php echo $TL[$LANG]['a-aboutme']; ?></a></p>
-		<?php search_form(); ?>
-	<?php } else { ?>
+		<?php search_form();
+	} else { ?>
 		<h1><?php echo $TL[$LANG]['title-blogname']; ?></h1>
 		<?php lang_menu($TL, $LANG); ?>
 		<p style="float: right; line-height: 34px;"><a href="/aboutme"><?php echo $TL[$LANG]['a-aboutme']; ?></a></p>
