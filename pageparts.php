@@ -5,9 +5,10 @@
  *
  */
 
+
 function head_title() {
 	global $DISPLAY, $SEARCH, $THIS, $CAT, $TL, $LANG;
-	
+
 	if ($DISPLAY === 'SEARCH') { ?>
 		<title><?php echo $SEARCH; ?> – <?php echo $TL[$LANG]['title-blogname']; ?></title>
 	<?php } elseif ($DISPLAY === 'ARTICLE') { ?>
@@ -21,15 +22,19 @@ function head_title() {
 	<?php }
 }
 
-function head_styles() {
+
+function head_stylesheets() {
 	global $DISPLAY, $SEARCH, $THIS, $CAT, $TL, $LANG;
 	?>
 
-		<link rel="stylesheet" type="text/css" href="./style.css" />
-	<?php if ($DISPLAY === 'ARTICLE' && is_file($THIS->root.'article.css')) { ?>
+	<link rel="stylesheet" type="text/css" href="./style.css" />
+	<?php
+	# if article has custom stylesheet, embed
+	if ($DISPLAY === 'ARTICLE' && is_file($THIS->root.'article.css')) { ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo $THIS->root; ?>article.css">
 	<?php }
 }
+
 
 
 /********** header and footer **********
@@ -37,19 +42,28 @@ function head_styles() {
  */
 
 
+function heafoo_overview($args=array()) {
+	# give overview link
+	global $TL, $LANG;
+	?>
+	<a class="overview" href="<?php echo queryURI($args); ?>" title="<?php echo $TL[$LANG]['a-overview']; ?>"></a>
+	<?php
+}
+
+
 function header_content() {
 	global $DISPLAY, $SEARCH, $THIS, $CAT, $TL, $LANG;
 	
-	if ($DISPLAY === 'SEARCH') { ?>
-		<a class="overview" href="<?php echo queryURI(array("search"=>'')); ?>" title="<?php echo $TL[$LANG]['a-overview']; ?>"></a>
+	if ($DISPLAY === 'SEARCH') {
+		heafoo_overview(array('search'=>'')); ?>
 		<h1><?php echo $TL[$LANG]['title-search'] ?> – <?php echo $TL[$LANG]['title-blogname']; ?></h1>
 		<?php
 		if ($CAT->slug !== 'ALL') { ?>
 			<p class="description"><?php echo $TL[$LANG]['search-filter-cat'][0].$CAT->title[$LANG].$TL[$LANG]['search-filter-cat'][1]; ?></p>
 		<?php }
 		lang_menu($TL, $LANG); ?>
-	<?php } elseif ($DISPLAY === 'ARTICLE') { ?>
-		<a class="overview" href="<?php echo queryURI(array("a"=>'')); ?>" title="<?php echo $TL[$LANG]['a-overview']; ?>"></a>
+	<?php } elseif ($DISPLAY === 'ARTICLE') {
+		heafoo_overview(array('a'=>'')); ?>
 		<h1><?php echo $THIS->title[$LANG]; ?></h1>
 		<div class="article-info">
 			<p class="author"><?php echo $THIS->author; ?></p>
@@ -68,13 +82,13 @@ function header_content() {
 			<?php } ?>
 			<button type="submit"><?php echo $TL[$LANG]['searchbar-submit']; ?></button>
 		</form>
-	<?php } elseif ($DISPLAY === 'CATEGORY') { ?>
-		<a class="overview" href="<?php echo queryURI(array("c"=>'all')); ?>" title="<?php echo $TL[$LANG]['a-overview']; ?>"></a>
+	<?php } elseif ($DISPLAY === 'CATEGORY') {
+		heafoo_overview(array("c"=>'all')); ?>
 		<img src="./category/img/icon-<?php echo (is_file('./category/img/icon-'.$CAT->slug.'.svg')?$CAT->slug:'unknown'); ?>.svg">
 		<h1><?php echo $CAT->title[$LANG]; ?></h1>
 		<p class="description"><?php echo $CAT->description[$LANG]; ?></p>
 		<?php lang_menu($TL, $LANG); ?>
-		<form method="get" action="<?php if(queryURI() != ''){echo queryURI();}else{echo '?';} ?>"  id="searchform">
+		<!--<form method="get" action="<?php if(queryURI() != ''){echo queryURI();}else{echo '?';} ?>"  id="searchform">
 			<span><input type="text" name="search" placeholder="<?php echo $TL[$LANG]['searchbar-placeholder']; ?>" <?php if ($DISPLAY === 'SEARCH') { echo 'value="'.trim_all($SEARCH).'"'; } ?>></span>
 			<?php
 			$args = getargs();
@@ -85,9 +99,10 @@ function header_content() {
 				<input type="hidden" name="<?php echo $key; ?>" value="<?php echo $value; ?>">
 			<?php } ?>
 			<button type="submit"><?php echo $TL[$LANG]['searchbar-submit']; ?></button>
-		</form>
-	<?php } elseif ($DISPLAY === 'ALL_C') { ?>
-		<a class="overview" href="<?php echo queryURI(array("c"=>'')); ?>" title="<?php echo $TL[$LANG]['a-overview']; ?>"></a>
+		</form>-->
+		<?php search_form($SEARCH); ?>
+	<?php } elseif ($DISPLAY === 'ALL_C') {
+		heafoo_overview(array('c'=>'')); ?>
 		<h1><?php echo $TL[$LANG]['title-categories']; ?> – <?php echo $TL[$LANG]['title-blogname']; ?></h1>
 		<?php lang_menu($TL, $LANG); ?>
 		<p style="float: right; line-height: 34px;"><a href="/aboutme"><?php echo $TL[$LANG]['a-aboutme']; ?></a></p>
@@ -109,20 +124,22 @@ function footer_content() {
 	?>
 
 	<div class="border-wrapper">
-	<?php if ($DISPLAY === 'SEARCH') { ?>
-		<a class="overview" href="<?php echo queryURI(array("search"=>'')); ?>" title="<?php echo $TL[$LANG]['a-overview']; ?>"></a>
-	<?php } elseif ($DISPLAY === 'ARTICLE') { ?>
-		<a class="overview" href="<?php echo queryURI(array("a"=>'')); ?>" title="<?php echo $TL[$LANG]['a-overview']; ?>"></a>
-	<?php } elseif ($DISPLAY === 'CATEGORY') { ?>
-		<a class="overview" href="<?php echo queryURI(array("c"=>'all')); ?>" title="<?php echo $TL[$LANG]['a-overview']; ?>"></a>
-	<?php } elseif ($DISPLAY === 'ALL_C') { ?>
-		<a class="overview" href="<?php echo queryURI(array("c"=>'')); ?>" title="<?php echo $TL[$LANG]['a-overview']; ?>"></a>
+	<?php if ($DISPLAY === 'SEARCH') {
+		heafoo_overview(array("search"=>'')); ?>
+	<?php } elseif ($DISPLAY === 'ARTICLE') {
+		heafoo_overview(array("a"=>'')); ?>
+	<?php } elseif ($DISPLAY === 'CATEGORY') {
+		heafoo_overview(array("c"=>'all')); ?>
+	<?php } elseif ($DISPLAY === 'ALL_C') {
+		heafoo_overview(array("c"=>'')); ?>
 	<?php } ?>
 		<p><?php echo $TL[$LANG]['copyrightby'][0]."2016".$TL[$LANG]['copyrightby'][1]; ?><a href="/aboutme">Peter Nerlich</a><?php echo $TL[$LANG]['copyrightby'][2]; ?></p>
 	</div>
 
 	<?php
 }
+
+
 
 /********** search **********
  * 
@@ -140,6 +157,7 @@ function search_form($SEARCH='') {
 		if (isset($args['search'])) {
 			unset($args['search']);
 		}
+		# don't lose the other settings!
 		foreach ($args as $key => $value) { ?>
 			<input type="hidden" name="<?php echo $key; ?>" value="<?php echo $value; ?>">
 		<?php } ?>
@@ -174,6 +192,7 @@ function flex_articles_loop($dir=array(),$cat='ALL') {
 		<h3 class="noarticles"><?php echo $TL[$LANG]['flex-search-noarticles']; ?></h3>
 	<?php }
 }
+
 
 function flex_article($THIS, $cat='ALL') {
 	global $DISPLAY, $TL, $LANG;
@@ -310,6 +329,7 @@ function flex_catoverview($dir=array(), $title='', $description='') {
 			<a id="all_c" href="<?php echo queryURI(array("c"=>'all',"a"=>'')); ?>">
 				<div class="prev" style="background: repeating-linear-gradient(-45deg, <?php
 					$px = 0;
+					# do the stripes!
 					foreach ($dir as $CAT) {
 						if (is_file('./category/'.$CAT) && $CAT !== '.' && $CAT !== '..' && $CAT !== 'index.php' && substr($CAT,0,3) !== 'bg-') {
 							$CAT = new Category(rtrim($CAT,'.php'));

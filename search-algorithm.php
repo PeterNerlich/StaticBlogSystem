@@ -1,7 +1,5 @@
 <?php
 
-#require_once './search-index.php';
-
 function strpartmatch($search='',$key='') {
 	$res = 0;
 	$searchptr = 0;

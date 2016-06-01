@@ -1,7 +1,9 @@
 <?php
 
+# local timezone
 date_default_timezone_set('CET');
 
+# most important variables
 global $DISPLAY, $SEARCH, $THIS, $CAT, $TL, $LANG;
 
 
@@ -12,14 +14,24 @@ global $DISPLAY, $SEARCH, $THIS, $CAT, $TL, $LANG;
 
 
 function INIT_DISPLAY($args=array()) {
+	# determine page type from arguments (e.g. url query string)
+	# setup either search, article context ($THIS), or category context $CAT
+
 	global $DISPLAY, $SEARCH, $THIS, $CAT, $TL, $LANG;
+
+	# load translations
 	require_once './lang.php';
+
+	# set current language
 	if (isset($args['lang']) && array_key_exists(strtoupper(trim($args['lang'])), $TL)) {
 		$LANG = strtoupper($args['lang']);
 	}
+
 	if (isset($args['search']) && trim($args['search']) != '') {
 		$DISPLAY = 'SEARCH';
 		$SEARCH = trim_all($args['search']);
+
+		# keep category context if present
 		if (isset($args['c']) && trim($args['c']) != '' && trim($args['c']) !== 'all') {
 			$CAT = new Category(trim($args['c']));
 			if (is_file('./category/'.$CAT->slug.'.php') && (include './category/'.$CAT->slug.'.php') === TRUE) {
@@ -36,6 +48,7 @@ function INIT_DISPLAY($args=array()) {
 		if (is_file($THIS->root.'info.php') && (include $THIS->root.'info.php') === TRUE) {
 			#
 		} else {
+			# TODO: don't abort, sjhow a proper error page
 			die('ERROR 404: Article not found');
 		}
 	} elseif (isset($args['c']) && trim($args['c']) != '') {
@@ -47,6 +60,7 @@ function INIT_DISPLAY($args=array()) {
 			if (is_file('./category/'.$CAT->slug.'.php') && (include './category/'.$CAT->slug.'.php') === TRUE) {
 				#
 			} else {
+				# TODO: don't abort, sjhow a proper error page
 				die('ERROR 404: Category not found');
 			}
 		}
@@ -63,6 +77,8 @@ function INIT_DISPLAY($args=array()) {
 
 
 function getargs() {
+	# reconstruct array of arguments from page type etc.
+
 	global $DISPLAY, $SEARCH, $THIS, $CAT, $TL, $LANG;
 	$args = array();
 
@@ -88,7 +104,11 @@ function getargs() {
 }
 
 function queryURI($overwrite=array()) {
+	# build query string
+
 	global $DISPLAY, $SEARCH, $THIS, $CAT, $TL, $LANG;
+
+	# use current page type etc. as base
 	$args = getargs();
 
 	foreach ($overwrite as $key => $value) {
@@ -109,10 +129,10 @@ function queryURI($overwrite=array()) {
 	return $uri;
 }
 
-function trim_all( $str , $what = NULL , $with = ' ' )
-{
-	if( $what === NULL )
-	{
+function trim_all( $str , $what = NULL , $with = ' ' ) {
+	# remove leading, ending and multiple spaces and similar
+
+	if($what === NULL) {
 		//	Character	Decimal		Use
 		//	"\0"		0			Null Character
 		//	"\t"		9			Tab
@@ -121,13 +141,14 @@ function trim_all( $str , $what = NULL , $with = ' ' )
 		//	"\r"		13			New Line in Mac
 		//	" "			32			Space
 
-		$what	=	"\\x00-\\x20";	//all white-spaces and control chars
+		$what = "\\x00-\\x20"; //all white-spaces and control chars
 	}
 
-	return trim( preg_replace( "/[".$what."]+/" , $with , $str ) , $what );
+	return trim(preg_replace("/[".$what."]+/", $with, $str), $what);
 }
 
 function console_log($data) {
+	# facilitate debugging
 	echo '<script>console.log('.json_encode($data).');</script>';
 	return $data;
 }

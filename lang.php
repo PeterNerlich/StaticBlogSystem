@@ -1,5 +1,7 @@
 <?php
 
+# the global $TL array provides the general translations of
+# website labels
 $TL = array(
 	"EN" => array(
 		"date-format"	=>	'd/m/Y',
@@ -48,6 +50,7 @@ $TL = array(
 	)
 );
 
+# default is the first language (EN)
 $LANG = key($TL);
 
 function lang_menu($a=array(), $exclude='') {

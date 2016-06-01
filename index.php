@@ -11,8 +11,11 @@
  *  Usage at own risk.
  */
 
+# import core and helper functions
 require_once './mgmt.php';
 
+# determine whether search or article etc.
+# from url query string
 INIT_DISPLAY($_GET);
 
 ?>
@@ -53,16 +56,22 @@ INIT_DISPLAY($_GET);
 
 		<?php
 
+		# import search algorithm
 		require_once './search-algorithm.php';
+		# import search index
 		require_once './search-index.php';
 
+		# search index for term 
 		$dir = blogsearch($SEARCH, $INDEX, $LANG);
 		$time = $dir['time'];
+
+		# only get articles that really exist
 		$dir = array_intersect_key(
 			$dir['res'],
 			array_flip( scandir('./article') )
 		);
 
+		# show articles
 		flex_articles_loop(array_keys($dir), $CAT->slug);
 		?>
 
@@ -73,7 +82,10 @@ INIT_DISPLAY($_GET);
 
 
 	<section class="article">
-		<?php include $THIS->root.'content.php'; ?>
+		<?php
+		# simply include the article
+		include $THIS->root.'content.php';
+		?>
 	</section>
 
 
@@ -85,7 +97,10 @@ INIT_DISPLAY($_GET);
 
 			<h1><?php echo $TL[$LANG]['h-catarticles']; ?></h1>
 
-			<?php flex_articles_loop($CAT->known, $CAT->slug); ?>
+			<?php
+			# show all articles in this category
+			flex_articles_loop($CAT->known, $CAT->slug);
+			?>
 		</div>
 	</section>
 
@@ -98,8 +113,9 @@ INIT_DISPLAY($_GET);
 
 			<h1><?php echo $TL[$LANG]['h-allcategories']; ?></h1>
 
-			<?php flex_categories_loop(scandir('./category', 1)); ?>
-
+			<?php
+			# show all categories
+			flex_categories_loop(scandir('./category', 1));?>
 		</div>
 	</section>
 
@@ -115,7 +131,10 @@ INIT_DISPLAY($_GET);
 
 			<h1><?php echo $TL[$LANG]['h-allarticles']; ?></h1>
 
-			<?php flex_articles_loop(scandir('./article', 1)); ?>
+			<?php
+			# show all existing articles
+			flex_articles_loop(scandir('./article', 1));
+			?>
 		</div>
 	</section>
 
@@ -134,7 +153,7 @@ INIT_DISPLAY($_GET);
 
 <div class="footerspacer clear"></div>
 <footer>
-<?php footer_content(); ?>
+	<?php footer_content(); ?>
 </footer>
 
 <!--<script async type="text/javascript" src="js/main.js"></script>-->
