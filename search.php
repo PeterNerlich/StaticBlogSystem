@@ -44,7 +44,14 @@ require_once './mgmt.php';
 </head>
 <body>
 
-<pre><a href="./s-indexing.php">INDEXING</a></pre><br>
+<pre><?php
+echo 'articles: '.date("m/d/Y H:i:s", filemtime('./article/.'))."\n";
+echo 'categories: '.date("m/d/Y H:i:s", filemtime('./category/.'))."\n";
+if (need_index() === TRUE) {
+	echo 'Need new index! ('.date("m/d/Y H:i:s", filemtime('./search-index.php')).') | ';
+} else {
+	echo 'Index up to date ('.date("m/d/Y H:i:s", filemtime('./search-index.php')).') | ';
+} ?><a href="./s-indexing.php">INDEXING</a></pre><br>
 
 <form method="get" action="?"  id="searchform">
 	<input type="text" name="search" placeholder="search string" <?php if (isset($_GET['search'])) { echo 'value="'.trim_all($_GET['search']).'"'; } ?>>

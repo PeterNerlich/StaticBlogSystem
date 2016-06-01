@@ -45,7 +45,7 @@ require_once './mgmt.php';
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="copyright" content="Peter Nerlich">
-<title>Keyword Indexing – <?php echo $TL[$LANG]['title-blogname']; ?></title>
+<title>Indexing – <?php echo $TL[$LANG]['title-blogname']; ?></title>
 <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
 <style>
 	html, body {

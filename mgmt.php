@@ -153,14 +153,12 @@ function console_log($data) {
 	return $data;
 }
 
-
-
-/********** page part functions **********
- * 
- */
-
-
-require_once './pageparts.php';
+function need_index() {
+	return (
+		filemtime('./article/.') > filemtime('./search-index.php') ||
+		filemtime('./category/.') > filemtime('./search-index.php')
+	);
+}
 
 
 
