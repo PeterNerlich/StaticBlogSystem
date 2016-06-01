@@ -125,9 +125,8 @@ INIT_DISPLAY($_GET);
 
 	<section class="articles">
 		<div class="border-wrapper">
-			<!--
 			<?php flex_catoverview(scandir('./category', 1), $TL[$LANG]['flex-gotoallc-title'], $TL[$LANG]['flex-gotoallc-description']); ?>
-			<br>-->
+			<br>
 
 			<h1><?php echo $TL[$LANG]['h-allarticles']; ?></h1>
 
