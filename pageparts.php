@@ -176,7 +176,7 @@ function flex_article($THIS, $cat='ALL') {
 
 	if ($THIS !== '.' && $THIS !== '..' && $THIS !== 'index.php') {
 		$THIS = new Article($THIS);
-		if ((include $THIS->root.'info.php') === TRUE && array_key_exists($LANG, $THIS->title) && $THIS->published < time() && ($cat === 'ALL' || in_array($cat, $THIS->categories))) {
+		if ((include $THIS->root.'info.php') === TRUE && array_key_exists($LANG, $THIS->title) && $THIS->published !== FALSE && $THIS->published < time() && ($cat === 'ALL' || in_array($cat, $THIS->categories))) {
 			?>
 
 			<figure class="article">
