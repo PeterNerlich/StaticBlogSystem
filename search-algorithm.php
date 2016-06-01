@@ -1,5 +1,24 @@
 <?php
 
+/********** about this file **********
+ *  If you read this because you want to
+ *  know how it's done, welcome to one
+ *  hell of a nightmare.
+ *  If you just want to read this
+ *  comment to know what it does in
+ *  summary, you didn't think about the
+ *  name of this file.
+ *  I search for occourences of parts of
+ *  the search term in parts of the
+ *  titles and descriptions collected in
+ *  the index and also compare each word
+ *  in the search term with the
+ *  keywords. based on how much matched
+ *  I determine the "fitness" or
+ *  relevance of the search result and
+ *  sort it accordingly at the end.
+ */
+
 function strpartmatch($search='',$key='') {
 	$res = 0;
 	$searchptr = 0;

@@ -2,6 +2,37 @@
 
 <?php
 
+/********** about this file **********
+ *  If you read this because you want to
+ *  know how it's done, compared to the
+ *  actual search algorithm it's really
+ *  easy. Read on, you're welcome.
+ *  If you just want to read this 
+ *  comment to know what it does in
+ *  summary, you didn't think about the
+ *  name of this file.
+ *  This file automatically constructs
+ *  a handy index file and should be
+ *  used after a new article went up or
+ *  the titles or descriptions of one
+ *  were updated.
+ *  The file contains only one variable
+ *  declaration, a multidimensional
+ *  array that follows the structure:
+ *                                      
+ *                 (VAR)                
+ *                   ↓                  
+ *    TITLES / DESCRIPTIONS / KEYWORDS  
+ *                   ↓                  
+ *            (exactly that)            
+ *                   ↓                  
+ *            (article slug)            
+ *                                      
+ *  Using this structure the actual
+ *  search is (hopefully) sped up
+ *  drastically.
+ */
+
 require_once './mgmt.php';
 
 ?>
@@ -134,7 +165,9 @@ echo "</span>\n\nWriting to file...";
 
 $time = microtime(true)-$time;
 
-file_put_contents('./search-index.php', "<?php\n\n/* indexing time: ".$time."s */\n\n\$INDEX = ".var_export($dump, true).";\n\n?>");
+$message = "\n/********** about this file **********\n *  This file shouldn't be touched since\n *  it is automatically generated.\n *  If you want to know what this file\n *  does you didn't think about the\n *  title.\n *  SEARCH INDEX - does it ring a bell?\n *  Ok seriously, the thing is that I\n *  can't afford to loop through all the\n *  houndreds of articles that might\n *  exist everytime someone types in a\n *  search phrase. Instead I load a\n *  single index file that tells me\n *  which articles match.\n *  This is exactly what you see below.\n */\n";
+
+file_put_contents('./search-index.php', "<?php\n".$message."\n/* indexing time: ".$time."s */\n\n\$INDEX = ".var_export($dump, true).";\n\n?>");
 
 echo "\t[<span class='good'>DONE</span>]\n";
 
