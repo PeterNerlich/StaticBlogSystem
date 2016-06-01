@@ -182,7 +182,7 @@ function flex_article($THIS, $cat='ALL') {
 			<figure class="article">
 				<a id="<?php echo $THIS->slug; ?>" href="<?php echo queryURI(array("a"=>$THIS->slug)); ?>">
 					<div class="prev">
-						<?php if (is_file($THIS->root.'preview.php') && (include $THIS->root.'preview.php') === TRUE) {
+						<?php if (is_file($THIS->root.'preview.php') && (include $THIS->root.'preview.php') !== FALSE) {
 							#
 						} elseif ($THIS->preview[$LANG] != "") {
 							echo $THIS->preview[$LANG];
