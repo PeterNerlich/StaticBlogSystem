@@ -1,5 +1,5 @@
 #Static Blog System
-This is the "static" blog system invented by Peter Nerlich.
+This is the "static" blog system invented by Peter Nerlich. A collaboration with Arpit Kharbanda.
 
 See it in use at [peter.nerlich4u.de/blog](http://peter.nerlich4u.de/blog/)
 
