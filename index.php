@@ -14,6 +14,9 @@
 # import core and helper functions
 require_once './mgmt.php';
 
+# subset of page parts
+require_once './pageparts.php';
+
 # determine whether search or article etc.
 # from url query string
 INIT_DISPLAY($_GET);
